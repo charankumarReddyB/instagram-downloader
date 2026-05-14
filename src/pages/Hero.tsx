@@ -53,21 +53,21 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-0 pb-16"
     >
       <AnimatedBlobs />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="inline-block mb-6"
+          className="inline-block mb-8"
         >
-          <div className="glassmorphic px-4 py-2 rounded-full flex items-center gap-2">
-            <Zap size={16} className="text-yellow-400" />
-            <span className="text-sm text-gray-300">Fast & Easy Download</span>
+          <div className="glassmorphic px-6 py-3 rounded-full flex items-center gap-3">
+            <Zap size={18} className="text-yellow-400" />
+            <span className="text-base text-gray-300 font-medium">Fast & Easy Download</span>
           </div>
         </motion.div>
 
@@ -76,10 +76,10 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+          className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
         >
           Download Instagram Reels
-          <span className="gradient-text block mt-2">in HD, No Watermark</span>
+          <span className="gradient-text block mt-4 text-4xl sm:text-5xl lg:text-6xl">in HD, No Watermark</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -87,7 +87,7 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="text-lg sm:text-xl text-gray-400 mb-12 max-w-2xl mx-auto"
+          className="text-xl sm:text-2xl text-gray-400 mb-16 max-w-3xl mx-auto leading-relaxed"
         >
           Paste your Instagram Reel link and download it instantly in the highest quality. No
           sign-up required, completely free.
@@ -99,38 +99,38 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
           id="hero-input"
-          className="space-y-4"
+          className="space-y-6 max-w-2xl mx-auto"
         >
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="space-y-4">
             <Input
               placeholder="Paste Instagram Reel URL here..."
               value={url}
               onChange={setUrl}
               type="url"
-              className="flex-1"
+              className="w-full text-lg py-4 px-6"
               error={error}
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="secondary"
-              size="md"
+              size="lg"
               onClick={handlePaste}
-              className="flex-1 sm:flex-none"
+              className="flex-1 sm:flex-none px-8 py-4 text-lg"
             >
-              📋 Paste
+              📋 Paste URL
             </Button>
             <Button
               variant="primary"
-              size="md"
+              size="lg"
               onClick={handleDownload}
               loading={loading}
               disabled={loading}
-              icon={<Download size={20} />}
-              className="flex-1"
+              icon={<Download size={22} />}
+              className="flex-1 px-8 py-4 text-lg"
             >
-              {loading ? "Processing..." : "Download"}
+              {loading ? "Processing..." : "Download Video"}
             </Button>
           </div>
         </motion.div>
@@ -140,14 +140,20 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto"
         >
           {[
-            { icon: "⚡", text: "Lightning Fast" },
-            { icon: "🔒", text: "100% Secure" },
-            { icon: "♾️", text: "Unlimited" },
+            { icon: "⚡", text: "Lightning Fast", desc: "Download in seconds" },
+            { icon: "🔒", text: "100% Secure", desc: "No data stored" },
+            { icon: "♾️", text: "Unlimited", desc: "Download as many as you want" },
           ].map((feature, idx) => (
-            <div key={idx} className="glassmorphic px-4 py-3 rounded-lg">
+            <div key={idx} className="glassmorphic px-6 py-6 rounded-xl hover:scale-105 transition-transform duration-300">
+              <div className="text-3xl mb-3">{feature.icon}</div>
+              <div className="font-semibold text-lg mb-1">{feature.text}</div>
+              <div className="text-gray-400 text-sm">{feature.desc}</div>
+            </div>
+          ))}
+        </motion.div>
               <div className="text-2xl mb-2">{feature.icon}</div>
               <p className="text-sm text-gray-300">{feature.text}</p>
             </div>
