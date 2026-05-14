@@ -31,11 +31,150 @@ A modern, production-ready web application for downloading videos from social me
 - **React Hot Toast** - Notifications
 - **Axios** - HTTP client
 
-### Backend (Ready to extend)
+### Backend
 - **Node.js/Express** - Server framework
-- **yt-dlp** - Video downloading (integration ready)
+- **yt-dlp** - Video downloading engine
 - **CORS** - Cross-origin requests
-- **dotenv** - Environment configuration
+- **ESM** - Modern JavaScript modules
+
+## 📋 Prerequisites
+
+Before running this application, make sure you have the following installed:
+
+- **Node.js** (v16 or higher) - [Download here](https://nodejs.org/)
+- **Python** (for yt-dlp) - [Download here](https://python.org/)
+- **Git** - [Download here](https://git-scm.com/)
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/mediadrop.git
+cd mediadrop
+```
+
+### 2. Install Dependencies
+
+```bash
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd backend
+npm install
+cd ..
+```
+
+### 3. Install yt-dlp
+
+```bash
+# Install yt-dlp (required for video downloading)
+pip install yt-dlp
+```
+
+### 4. Start the Application
+
+```bash
+# Start frontend (development mode)
+npm run dev
+
+# In another terminal, start backend
+cd backend
+npm run start
+```
+
+The application will be available at:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:5001
+
+## 📁 Project Structure
+
+```
+mediadrop/
+├── src/                    # Frontend React application
+│   ├── components/         # Reusable React components
+│   ├── pages/             # Page components
+│   ├── services/          # API services
+│   ├── utils/             # Utility functions
+│   └── styles/            # Global styles
+├── backend/               # Backend Node.js server
+│   ├── controllers/       # Route controllers
+│   ├── routes/           # API routes
+│   ├── services/         # Business logic services
+│   ├── utils/            # Backend utilities
+│   └── downloads/        # Downloaded files storage
+├── public/               # Static assets
+└── dist/                 # Built frontend (after npm run build)
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the backend directory:
+
+```env
+PORT=5001
+NODE_ENV=development
+```
+
+### Build for Production
+
+```bash
+# Build frontend
+npm run build
+
+# Start production server
+npm run preview
+```
+
+## 📖 Usage
+
+1. Open the application in your browser
+2. Paste a supported video URL in the input field
+3. Click "Download" to process the video
+4. Wait for processing to complete
+5. Click "Download Video" to save the file
+
+### Supported URL Formats
+
+- **Instagram**: `https://www.instagram.com/reel/...` or `https://www.instagram.com/p/...`
+- **TikTok**: `https://www.tiktok.com/@user/video/...` or `https://vm.tiktok.com/...`
+- **YouTube**: `https://www.youtube.com/shorts/...`
+- **Facebook**: `https://www.facebook.com/user/videos/...`
+- **Twitter/X**: `https://twitter.com/user/status/...` or `https://x.com/user/status/...`
+
+## 🔒 Important Notes
+
+### Instagram Downloads
+Most Instagram content requires authentication to download. If you encounter authentication errors:
+- The video may be private
+- Instagram may have changed their API
+- You may need to use browser cookies (advanced setup)
+
+### Security
+- Videos are downloaded server-side and served temporarily
+- No user data is stored permanently
+- All downloads are processed in memory when possible
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - The backbone of video downloading
+- [Tailwind CSS](https://tailwindcss.com/) - For the beautiful UI
+- [Vite](https://vitejs.dev/) - For the lightning-fast development experience
 
 ## 📁 Project Structure
 
