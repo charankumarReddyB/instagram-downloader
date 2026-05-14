@@ -6,23 +6,31 @@
 import * as downloadService from "../services/downloadService.js";
 import { getPlatformFromUrl } from "../utils/validation.js";
 
+const buildDownloadUrl = (req, fileName) => {
+  if (!fileName) return null;
+  const protocol = req.protocol;
+  const host = req.get("host");
+  return `${protocol}://${host}/downloads/${fileName}`;
+};
+
 /**
  * Download video from URL
  */
 export const downloadVideo = async (req, res) => {
   try {
-    const { url } = req.body;
+    const url = req.videoUrl || req.body.url;
+    const platform = req.platform || getPlatformFromUrl(url);
 
-    // Get platform type
-    const platform = getPlatformFromUrl(url);
-
-    // Call appropriate service based on platform
     const result = await downloadService.downloadVideo(url, platform);
 
     if (result.success) {
+      const downloadUrl = buildDownloadUrl(req, result.data?.downloadUrl);
       res.status(200).json({
         success: true,
-        data: result.data,
+        data: {
+          ...result.data,
+          downloadUrl: downloadUrl || result.data?.downloadUrl,
+        },
         message: "Video downloaded successfully",
       });
     } else {
@@ -45,8 +53,8 @@ export const downloadVideo = async (req, res) => {
  */
 export const getVideoInfo = async (req, res) => {
   try {
-    const { url } = req.body;
-    const platform = getPlatformFromUrl(url);
+    const url = req.videoUrl || req.body.url;
+    const platform = req.platform || getPlatformFromUrl(url);
 
     const result = await downloadService.getVideoInfo(url, platform);
 
@@ -83,22 +91,22 @@ export const getSupportedPlatforms = async (req, res) => {
       },
       {
         name: "TikTok",
-        status: "coming",
+        status: "available",
         formats: ["video"],
       },
       {
         name: "YouTube Shorts",
-        status: "coming",
+        status: "available",
         formats: ["short"],
       },
       {
         name: "Facebook",
-        status: "coming",
+        status: "available",
         formats: ["video"],
       },
       {
         name: "Twitter/X",
-        status: "coming",
+        status: "available",
         formats: ["video"],
       },
     ];
@@ -122,8 +130,6 @@ export const getSupportedPlatforms = async (req, res) => {
 export const getDownloadStatus = async (req, res) => {
   try {
     const { videoId } = req.params;
-
-    // In a real implementation, this would check a database
     const status = await downloadService.getDownloadStatus(videoId);
 
     res.status(200).json({

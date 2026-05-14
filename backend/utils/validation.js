@@ -18,34 +18,55 @@ export const isValidUrl = (url) => {
  * Validate Instagram URL
  */
 export const isValidInstagramUrl = (url) => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?instagram\.com\/reels\/[\w-]+/,
-    /^https:\/\/(www\.)?instagram\.com\/p\/[\w-]+/,
-    /^https:\/\/(www\.)?ig\.me\/[\w-]+/,
+    /^https:\/\/(www\.)?instagram\.com\/reels?\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/(www\.)?instagram\.com\/p\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/(www\.)?ig\.me\/[\w-]+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
 };
 
 /**
  * Validate TikTok URL
  */
 export const isValidTikTokUrl = (url) => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+/,
-    /^https:\/\/(vm|vt)\.tiktok\.com\/\w+/,
+    /^https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+(?:[/?].*)?$/,
+    /^https:\/\/(vm|vt)\.tiktok\.com\/\w+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
 };
 
 /**
  * Validate YouTube URL
  */
 export const isValidYouTubeUrl = (url) => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+/,
-    /^https:\/\/youtu\.be\/[\w-]+/,
+    /^https:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/youtu\.be\/[\w-]+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
+};
+
+/**
+ * Validate Facebook URL
+ */
+export const isValidFacebookUrl = (url) => {
+  const normalizedUrl = url.trim().toLowerCase();
+  const pattern = /^https:\/\/(www\.)?facebook\.com\/[\w.-]+\/videos\/[\d]+(?:[/?].*)?$/;
+  return pattern.test(normalizedUrl);
+};
+
+/**
+ * Validate Twitter URL
+ */
+export const isValidTwitterUrl = (url) => {
+  const normalizedUrl = url.trim().toLowerCase();
+  const pattern = /^https:\/\/(twitter\.com|x\.com)\/[\w]+\/status\/[\d]+(?:[/?].*)?$/;
+  return pattern.test(normalizedUrl);
 };
 
 /**
@@ -55,6 +76,8 @@ export const getPlatformFromUrl = (url) => {
   if (isValidInstagramUrl(url)) return "instagram";
   if (isValidTikTokUrl(url)) return "tiktok";
   if (isValidYouTubeUrl(url)) return "youtube";
+  if (isValidFacebookUrl(url)) return "facebook";
+  if (isValidTwitterUrl(url)) return "twitter";
   return "unknown";
 };
 

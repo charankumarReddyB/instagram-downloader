@@ -9,12 +9,13 @@
  * @returns boolean indicating if URL is valid Instagram Reel link
  */
 export const isValidInstagramUrl = (url: string): boolean => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?instagram\.com\/reels\/[\w-]+/,
-    /^https:\/\/(www\.)?instagram\.com\/p\/[\w-]+/,
-    /^https:\/\/(www\.)?ig\.me\/[\w-]+/,
+    /^https:\/\/(www\.)?instagram\.com\/reels?\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/(www\.)?instagram\.com\/p\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/(www\.)?ig\.me\/[\w-]+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
 };
 
 /**
@@ -31,36 +32,40 @@ export const extractInstagramId = (url: string): string | null => {
  * Validate TikTok URL (for future use)
  */
 export const isValidTikTokUrl = (url: string): boolean => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+/,
-    /^https:\/\/(vm|vt)\.tiktok\.com\/\w+/,
+    /^https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/video\/\d+(?:[/?].*)?$/,
+    /^https:\/\/(vm|vt)\.tiktok\.com\/\w+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
 };
 
 /**
  * Validate YouTube URL (for future use)
  */
 export const isValidYouTubeUrl = (url: string): boolean => {
+  const normalizedUrl = url.trim().toLowerCase();
   const patterns = [
-    /^https:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+/,
-    /^https:\/\/youtu\.be\/[\w-]+/,
+    /^https:\/\/(www\.)?youtube\.com\/shorts\/[\w-]+(?:[/?].*)?$/,
+    /^https:\/\/youtu\.be\/[\w-]+(?:[/?].*)?$/,
   ];
-  return patterns.some((pattern) => pattern.test(url.trim()));
+  return patterns.some((pattern) => pattern.test(normalizedUrl));
 };
 
 /**
  * Validate Facebook Video URL (for future use)
  */
 export const isValidFacebookUrl = (url: string): boolean => {
-  return /^https:\/\/(www\.)?facebook\.com\/[\w.-]+\/videos\/[\d]+/.test(url.trim());
+  const normalizedUrl = url.trim().toLowerCase();
+  return /^https:\/\/(www\.)?facebook\.com\/[\w.-]+\/videos\/[\d]+(?:[/?].*)?$/.test(normalizedUrl);
 };
 
 /**
  * Validate Twitter/X Video URL (for future use)
  */
 export const isValidTwitterUrl = (url: string): boolean => {
-  return /^https:\/\/(twitter\.com|x\.com)\/[\w]+\/status\/[\d]+/.test(url.trim());
+  const normalizedUrl = url.trim().toLowerCase();
+  return /^https:\/\/(twitter\.com|x\.com)\/[\w]+\/status\/[\d]+(?:[/?].*)?$/.test(normalizedUrl);
 };
 
 /**
@@ -89,7 +94,7 @@ export const formatUrlForDisplay = (url: string, maxLength: number = 50): string
  * Clean URL input (trim whitespace)
  */
 export const cleanUrl = (url: string): string => {
-  return url.trim().toLowerCase();
+  return url.trim();
 };
 
 /**

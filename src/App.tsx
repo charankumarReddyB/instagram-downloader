@@ -13,7 +13,7 @@ import SupportedPlatforms from "./pages/SupportedPlatforms";
 import HowItWorks from "./pages/HowItWorks";
 import FAQ from "./pages/FAQ";
 import { toast } from "./components/Toast";
-import { mockDownloadVideo } from "./services/mockApi";
+import apiService from "./services/apiService";
 
 function App() {
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
@@ -24,26 +24,29 @@ function App() {
     toast.info("Processing your video...");
 
     try {
-      // Using mock API for demonstration
-      // In production, this would call the real backend API
-      const response = await mockDownloadVideo(url) as any;
+      const response = await apiService.downloadVideo(url);
 
-      if (response?.success) {
-        setSelectedVideo(response?.data);
+      if (response?.success && response.data) {
+        setSelectedVideo(response.data);
         toast.success("Video processed successfully!");
 
-        // Scroll to preview section
         setTimeout(() => {
           document.querySelector("#preview")?.scrollIntoView({ behavior: "smooth" });
         }, 300);
       } else {
-        toast.error("Failed to process video. Please try again.");
+        toast.error(response.error || "Failed to process video. Please try again.");
       }
     } catch (error) {
       console.error("Download error:", error);
       toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleOpenDownload = () => {
+    if (selectedVideo?.downloadUrl) {
+      window.open(selectedVideo.downloadUrl, "_blank");
     }
   };
 
@@ -54,7 +57,13 @@ function App() {
 
       <main>
         <Hero onDownload={handleDownload} loading={loading} />
-        {selectedVideo && <ReelPreview video={selectedVideo} />}
+        {selectedVideo && (
+          <ReelPreview
+            video={selectedVideo}
+            loading={loading}
+            onDownload={handleOpenDownload}
+          />
+        )}
         <Features />
         <SupportedPlatforms />
         <HowItWorks />

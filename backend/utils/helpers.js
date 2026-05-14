@@ -1,10 +1,17 @@
 /**
  * Backend Helper Utilities
  */
-
 import crypto from "crypto";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const getDownloadsDir = () => {
+  return path.join(__dirname, "../downloads");
+};
 
 /**
  * Generate unique ID
@@ -24,16 +31,15 @@ export const generateVideoFilename = (videoId, extension = "mp4") => {
  * Get safe file path
  */
 export const getSafeFilePath = (fileName) => {
-  // Prevent path traversal attacks
   const safeName = path.basename(fileName);
-  return path.join("./downloads", safeName);
+  return path.join(getDownloadsDir(), safeName);
 };
 
 /**
  * Check if downloads directory exists, create if not
  */
 export const ensureDownloadsDir = () => {
-  const downloadsDir = path.join("./downloads");
+  const downloadsDir = getDownloadsDir();
   if (!fs.existsSync(downloadsDir)) {
     fs.mkdirSync(downloadsDir, { recursive: true });
   }

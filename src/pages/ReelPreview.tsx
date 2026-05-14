@@ -43,6 +43,17 @@ export const ReelPreview: React.FC<ReelPreviewProps> = ({
     }
   };
 
+  const handleDownload = () => {
+    if (onDownload) {
+      onDownload();
+      return;
+    }
+
+    if (video?.downloadUrl) {
+      window.open(video.downloadUrl, "_blank");
+    }
+  };
+
   return (
     <section id="preview" className="py-12 md:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,7 +111,7 @@ export const ReelPreview: React.FC<ReelPreviewProps> = ({
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={onDownload}
+                  onClick={handleDownload}
                   icon={<Download size={18} />}
                   className="sm:col-span-2"
                 >

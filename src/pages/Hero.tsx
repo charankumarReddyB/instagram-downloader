@@ -9,7 +9,7 @@ import { Download, Zap } from "lucide-react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import AnimatedBlobs from "../components/AnimatedBlobs";
-import { isValidInstagramUrl, cleanUrl } from "../utils/validation";
+import { getPlatformFromUrl, cleanUrl } from "../utils/validation";
 import { toast } from "../components/Toast";
 
 interface HeroProps {
@@ -38,8 +38,11 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
       return;
     }
 
-    if (!isValidInstagramUrl(cleanedUrl)) {
-      setError("Please enter a valid Instagram Reel or post URL");
+    const platform = getPlatformFromUrl(cleanedUrl);
+    if (platform === "unknown") {
+      setError(
+        "Please enter a valid Instagram, TikTok, YouTube Shorts, Facebook, or Twitter/X video URL"
+      );
       return;
     }
 
