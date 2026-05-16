@@ -23,8 +23,8 @@ export const Features: React.FC = () => {
     },
     {
       icon: <Shield className="w-8 h-8 text-cyan-400" />,
-      title: "No Watermark",
-      description: "Get clean videos without any watermarks or branding",
+      title: "Watermark Removal",
+      description: "Automatically process Instagram reels to reduce visible watermark branding",
     },
     {
       icon: <Zap className="w-8 h-8 text-yellow-400" />,

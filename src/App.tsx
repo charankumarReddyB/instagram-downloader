@@ -51,7 +51,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-dark">
+    <div className="min-h-screen bg-[#020617] text-white">
       <Toaster position="bottom-right" />
       <Navbar />
 

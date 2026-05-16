@@ -53,112 +53,111 @@ export const Hero: React.FC<HeroProps> = ({ onDownload, loading = false }) => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-0 pb-16"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-16"
     >
       <AnimatedBlobs />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="inline-block mb-8"
-        >
-          <div className="glassmorphic px-6 py-3 rounded-full flex items-center gap-3">
-            <Zap size={18} className="text-yellow-400" />
-            <span className="text-base text-gray-300 font-medium">Fast & Easy Download</span>
-          </div>
-        </motion.div>
-
-        {/* Main Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-        >
-          Download Instagram Reels
-          <span className="gradient-text block mt-4 text-4xl sm:text-5xl lg:text-6xl">in HD, No Watermark</span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="text-xl sm:text-2xl text-gray-400 mb-16 max-w-3xl mx-auto leading-relaxed"
-        >
-          Paste your Instagram Reel link and download it instantly in the highest quality. No
-          sign-up required, completely free.
-        </motion.p>
-
-        {/* Input Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-          id="hero-input"
-          className="space-y-6 max-w-2xl mx-auto"
-        >
-          <div className="space-y-4">
-            <Input
-              placeholder="Paste Instagram Reel URL here..."
-              value={url}
-              onChange={setUrl}
-              type="url"
-              className="w-full text-lg py-4 px-6"
-              error={error}
-            />
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={handlePaste}
-              className="flex-1 sm:flex-none px-8 py-4 text-lg"
-            >
-              📋 Paste URL
-            </Button>
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleDownload}
-              loading={loading}
-              disabled={loading}
-              icon={<Download size={22} />}
-              className="flex-1 px-8 py-4 text-lg"
-            >
-              {loading ? "Processing..." : "Download Video"}
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Features Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto"
-        >
-          {[
-            { icon: "⚡", text: "Lightning Fast", desc: "Download in seconds" },
-            { icon: "🔒", text: "100% Secure", desc: "No data stored" },
-            { icon: "♾️", text: "Unlimited", desc: "Download as many as you want" },
-          ].map((feature, idx) => (
-            <div key={idx} className="glassmorphic px-6 py-6 rounded-xl hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl mb-3">{feature.icon}</div>
-              <div className="font-semibold text-lg mb-1">{feature.text}</div>
-              <div className="text-gray-400 text-sm">{feature.desc}</div>
+      <div className="relative z-10 w-full max-w-6xl px-6 sm:px-8 lg:px-12">
+        <div className="mx-auto rounded-[2rem] border border-white/10 bg-slate-950/80 shadow-2xl shadow-slate-950/40 backdrop-blur-3xl p-8 sm:p-12">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-center"
+          >
+            <div className="mx-auto inline-flex items-center gap-3 rounded-full border border-purple-500/20 bg-white/5 px-5 py-3 text-sm text-purple-100 shadow-sm">
+              <Zap size={18} className="text-yellow-300" />
+              <span>Fast, secure Instagram Reel downloads</span>
             </div>
-          ))}
-        </motion.div>
-              <div className="text-2xl mb-2">{feature.icon}</div>
-              <p className="text-sm text-gray-300">{feature.text}</p>
+
+            <h1 className="mt-8 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Download Instagram Reels
+            </h1>
+            <p className="mx-auto mt-6 max-w-3xl text-base text-slate-300 sm:text-lg">
+              Get your Instagram reels in HD with no extra watermark added by the app. Some videos may still keep the watermark embedded in the original source.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.35 }}
+            className="mt-12"
+          >
+            <div className="rounded-3xl border border-white/10 bg-slate-950/90 p-6 shadow-xl shadow-slate-950/30">
+              <div className="space-y-4">
+                <Input
+                  placeholder="Paste Instagram Reel URL here..."
+                  value={url}
+                  onChange={setUrl}
+                  type="url"
+                  className="w-full text-lg py-4 px-6"
+                  error={error}
+                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={handlePaste}
+                    className="w-full"
+                  >
+                    📋 Paste URL
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={handleDownload}
+                    loading={loading}
+                    disabled={loading}
+                    icon={<Download size={22} />}
+                    className="w-full"
+                  >
+                    {loading ? "Processing..." : "Download Video"}
+                  </Button>
+                </div>
+                <p className="text-sm text-slate-400">
+                  Note: the downloader saves the original Instagram video. If the source already includes a watermark, it may remain visible.
+                </p>
+              </div>
             </div>
-          ))}
-        </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="mt-14 grid gap-4 sm:grid-cols-3"
+          >
+            {[
+              {
+                icon: "⚡",
+                text: "Super Fast",
+                desc: "Download reels in seconds with optimized processing.",
+              },
+              {
+                icon: "🛡️",
+                text: "Private & Secure",
+                desc: "No login required and no user data stored.",
+              },
+              {
+                icon: "📁",
+                text: "Original Quality",
+                desc: "Get the best available mp4 file from the source.",
+              },
+            ].map((feature, idx) => (
+              <div
+                key={idx}
+                className="rounded-3xl border border-white/10 bg-slate-900/90 p-6 text-left shadow-lg shadow-slate-950/10"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-500/10 text-2xl">
+                  {feature.icon}
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-white">{feature.text}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{feature.desc}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

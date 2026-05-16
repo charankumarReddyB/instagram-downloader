@@ -1,7 +1,7 @@
 /**
  * Download Service
  * Handles video downloading logic
- * 
+ *
  * Integration notes for yt-dlp:
  * - Install: pip install yt-dlp
  * - Use child_process to execute yt-dlp commands
@@ -17,25 +17,41 @@ import {
   ensureDownloadsDir,
   getSafeFilePath,
   getFileSize,
+  deleteFileSafely,
 } from "../utils/helpers.js";
 
 const execFileAsync = promisify(execFile);
 const supportedPlatforms = ["instagram", "tiktok", "youtube", "facebook", "twitter"];
 
-const runYtDlp = async (args) => {
+const runProcess = async (command, args) => {
   try {
-    return await execFileAsync("yt-dlp", args, {
+    return await execFileAsync(command, args, {
       windowsHide: true,
-      maxBuffer: 1024 * 1024 * 10,
+      maxBuffer: 1024 * 1024 * 20,
     });
   } catch (error) {
     throw error;
   }
 };
 
+const runYtDlp = async (args) => runProcess("yt-dlp", args);
+const runFfmpeg = async (args) => runProcess("ffmpeg", args);
+
 const getVideoMetadata = async (url) => {
   const { stdout } = await runYtDlp(["--dump-json", "--no-warnings", "--no-playlist", url]);
   return JSON.parse(stdout);
+};
+
+const removeWatermark = async (inputPath, outputPath, platform) => {
+  if (platform !== "instagram") return null;
+
+  const filter = [
+    "delogo=x=iw-220:y=ih-70:w=220:h=70:show=0",
+    "delogo=x=20:y=20:w=180:h=50:show=0",
+  ].join(",");
+
+  await runFfmpeg(["-y", "-i", inputPath, "-vf", filter, "-c:a", "copy", outputPath]);
+  return outputPath;
 };
 
 /**
@@ -58,13 +74,17 @@ export const downloadVideo = async (url, platform) => {
     let metadata = {
       title: "Downloaded Video",
       duration: 0,
-      thumbnail: "https://images.unsplash.com/photo-1611339555312-e607c25352ba?w=500&h=500&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1611339555312-e607c25352ba?w=500&h=500&fit=crop",
     };
 
     try {
       metadata = await getVideoMetadata(url);
     } catch (error) {
-      console.warn("Failed to extract metadata from yt-dlp, continuing with default metadata.", error);
+      console.warn(
+        "Failed to extract metadata from yt-dlp, continuing with default metadata.",
+        error
+      );
     }
 
     try {
@@ -78,6 +98,8 @@ export const downloadVideo = async (url, platform) => {
         url,
       ]);
     } catch (error) {
+      const errorMessage = error.message || error.stderr || error.stdout || "";
+
       if (error.code === "ENOENT") {
         return {
           success: false,
@@ -86,12 +108,11 @@ export const downloadVideo = async (url, platform) => {
         };
       }
 
-      // Check for specific Instagram authentication error
-      const errorMessage = error.message || error.stderr || error.stdout || "";
       if (errorMessage.includes("Instagram sent an empty media response")) {
         return {
           success: false,
-          error: "Instagram video requires authentication. This video may be private or require login to access.",
+          error:
+            "Instagram video requires authentication. This video may be private or require login to access.",
         };
       }
 
@@ -103,7 +124,36 @@ export const downloadVideo = async (url, platform) => {
       };
     }
 
-    const size = getFileSize(outputPath);
+    let finalPath = outputPath;
+    let finalFilename = filename;
+    let watermarkRemoved = false;
+
+    if (platform === "instagram") {
+      const processedFilename = `processed-${filename}`;
+      const processedPath = getSafeFilePath(processedFilename);
+
+      try {
+        const processedResult = await removeWatermark(outputPath, processedPath, platform);
+        if (processedResult) {
+          await deleteFileSafely(filename);
+          finalPath = processedResult;
+          finalFilename = processedFilename;
+          watermarkRemoved = true;
+        }
+      } catch (error) {
+        if (error.code === "ENOENT" || error.message?.includes("ffmpeg")) {
+          return {
+            success: false,
+            error:
+              "ffmpeg is required for watermark removal. Install ffmpeg and make sure it is available in PATH.",
+          };
+        }
+
+        console.warn("Watermark removal failed, returning original video:", error);
+      }
+    }
+
+    const size = getFileSize(finalPath);
 
     return {
       success: true,
@@ -111,12 +161,14 @@ export const downloadVideo = async (url, platform) => {
         id: videoId,
         title: metadata.title || "Downloaded Video",
         duration: metadata.duration || 0,
-        thumbnail: metadata.thumbnail ||
+        thumbnail:
+          metadata.thumbnail ||
           "https://images.unsplash.com/photo-1611339555312-e607c25352ba?w=500&h=500&fit=crop",
         platform,
-        quality: "Best available",
+        quality: watermarkRemoved ? "Watermark Removed" : "Best available",
         size,
-        downloadUrl: filename,
+        downloadUrl: finalFilename,
+        isWatermarkRemoved: watermarkRemoved,
       },
     };
   } catch (error) {
@@ -147,7 +199,8 @@ export const getVideoInfo = async (url, platform) => {
         id: generateUniqueId(),
         title: metadata.title || "Video Title",
         duration: metadata.duration || 0,
-        thumbnail: metadata.thumbnail ||
+        thumbnail:
+          metadata.thumbnail ||
           "https://images.unsplash.com/photo-1611339555312-e607c25352ba?w=500&h=500&fit=crop",
         platform,
         quality: "Best available",

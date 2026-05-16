@@ -35,6 +35,8 @@ export const Input: React.FC<InputProps> = ({
   required = false,
   className = "",
 }) => {
+  const inputPadding = icon ? "pl-12 pr-4" : "px-4";
+
   return (
     <motion.div
       className="w-full"
@@ -62,7 +64,7 @@ export const Input: React.FC<InputProps> = ({
           onFocus={onFocus}
           onBlur={onBlur}
           disabled={disabled}
-          className={`w-full px-${icon ? "12" : "4"} py-3 bg-dark-card/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+          className={`w-full ${inputPadding} py-3 bg-dark-card/60 border border-purple-500/30 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
         />
       </div>
       {error && (

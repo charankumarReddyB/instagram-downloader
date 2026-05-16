@@ -32,7 +32,7 @@ export const HowItWorks: React.FC = () => {
       number: 3,
       icon: <Download className="w-12 h-12 text-pink-400" />,
       title: "Download Video",
-      description: "Get your video in HD quality without watermark in seconds",
+      description: "Get your Instagram reel in HD with watermark removal processing applied",
     },
   ];
 
